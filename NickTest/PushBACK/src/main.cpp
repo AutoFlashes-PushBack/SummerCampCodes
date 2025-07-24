@@ -17,12 +17,12 @@ competition Competition;
 // define your global instances of motors and other devices here
 
 motor Arm = motor(PORT1, ratio18_1, true);
-motor LF = motor(PORT2, ratio6_1);
-motor LM = motor(PORT3, ratio6_1);
-motor LB = motor(PORT4, ratio6_1);
-motor RF = motor(PORT5, ratio6_1, true);
-motor RM = motor(PORT6, ratio6_1, true);
-motor RB = motor(PORT7, ratio6_1, true);
+motor LF = motor(PORT18, ratio6_1, true);
+motor LM = motor(PORT15, ratio6_1, true);
+motor LB = motor(PORT5, ratio6_1, true);
+motor RF = motor(PORT16, ratio6_1);
+motor RM = motor(PORT19, ratio6_1);
+motor RB = motor(PORT13, ratio6_1);
 controller remote = controller(primary);
 
 motor_group leftAll = motor_group(LF, LM, LB);
@@ -93,7 +93,7 @@ void usercontrol(void) {
     remote.ButtonB.released(armStop);
     
     float Lpower = remote.Axis3.position();
-    float Rpower = remote.Axis4.position();
+    float Rpower = remote.Axis2.position();
 
     leftAll.spin(fwd, Lpower*.12, volt);
     rightAll.spin(fwd, Rpower*.12, volt);
