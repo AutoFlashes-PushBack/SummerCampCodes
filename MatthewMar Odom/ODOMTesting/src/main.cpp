@@ -100,15 +100,43 @@ preRotationRad=degToRad(rotationCurrent);
 
   if (rotationChange>M_PI){
     rotationChange -= 2 * M_PI;
- 
 }
 
   else if (rotationChange<-M_PI){
   rotationChange += 2 * M_PI;
-
 }
 
+double localVertchange = disTraveled(vertChange);
+double localHorChange = disTraveled(horChange);
 
+//Makes it to where when you spin you can calculate for the offset due to the wheels not being directly in the center
+double localXPosition=localVertChange-(xaxiswheeloffset*rotationChange);
+double localYPosition=localHorChange-(yaxiswheeloffset*rotationChange);
+
+double localPolarAngle;
+double localPolarLength;
+
+if (localXPosition==0 and localYPosition==0){
+    localPolarAngle=0;
+    localPolarLength=0;
+}
+
+else{
+  localPolarAngle = atan2(localYPosition, localXPosition);
+
+  localPolarLength = sqrt(pow(localXPosition,2) + pow(localYPosition,2));
+}
+
+double globalPolarAngle = (localPolarAngle-degToRad(rotationCurrent));
+
+
+double xChangeGlobal=localPolarLength*cos(globalPolarAngle);
+double yChangeGlobal=localPolarLength*sin(globalPolarAngle);
+
+xGlobalPosition+=xChangeGlobal;
+yGlobalPosition+=yChangeGlobal;
+globalRotationRad=globalPolarAngle;
+wait(5,msec);
 }
 
 
