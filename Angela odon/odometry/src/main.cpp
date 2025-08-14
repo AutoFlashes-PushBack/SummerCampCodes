@@ -72,6 +72,41 @@ if(rotationChangeRad > M_PI){
 else if (rotationChangeRad<-M_PI){
   rotationChangeRad+= 2*M_PI;
 }
+
+//makes a variable for vertical or horizonal change
+double localVertChange = calcdistance(vertChange);
+double localHorChange = calcdistance(horizChange);
+
+//calc local xy change 
+double localXPosition=localHorChange-(horizoffset*rotationChangeRad);
+double localYPosition=localVertChange-(vertoffset*rotationChangeRad);
+
+//polar(positive) angle and length variables
+double localPolarAngle;
+double localPolarLength;
+
+//if the robot stayed in the same spot, then polar angle and length are 0
+if(localXPosition==0 and localYPosition==0){
+  localPolarAngle=0;               //== is to check if a value is something
+  localPolarLength=0;              //= is to set a value
+}
+else{
+  //polar angle is calc by arctan, input x and y, output angle
+  localPolarAngle = atan2(localYPosition, localXPosition); //atan2=arctan
+  //use pythagorean thoerorm to get polar length
+  localPolarLength = sqrt(pow(localXPosition,2)+pow(localYPosition,2));
+}
+ //calc global angle, angle that your robot is globally
+ double globalPolarAngle = (localPolarAngle-degtorad(rotationCurrent));
+
+ //use global angle and local length to get change in xy
+ double xChangeGlobal=localPolarLength*cos(globalPolarAngle);
+ double yChangeGlobal=localPolarLength*sin(globalPolarAngle);
+ //add change to global position
+ xGlobalPosition+=xChangeGlobal;
+ yGlobalPosition+=yChangeGlobal;
+ globalRotationRad=globalPolarAngle;
+ wait(5,msec);
 }
 /*---------------------------------------------------------------------------*/
 /*                          Pre-Autonomous Functions                         */
